@@ -25,6 +25,7 @@ Every decision is presented as **selectable options** (arrow keys) — not free-
 
 - **Zero vague adjectives.** The words "modern," "clean," "minimal," "subtle" are banned. Everything is a number: `px`, `rem`, `hex`, `rgba`, `ms`.
 - **Interactive selections.** Every decision point uses Claude Code's `AskUserQuestion` UI — pick with arrow keys, not typing.
+- **Image reference support.** Provide screenshots, mockups, or brand assets at any phase — the skill extracts colors, typography, layout, and effects as concrete values.
 - **Section-by-section loop.** Each section gets its own approval gate. Approve and move on, or revise before continuing.
 - **Anti-pattern detector.** If you say something vague, it won't accept it — it'll present concrete alternatives to choose from.
 - **Based on proven methodology.** Built on analysis of production UI engineering prompts that consistently produce high-fidelity output.
@@ -88,6 +89,11 @@ Update the `@` reference in `.claude/commands/ui-expert.md`:
 Phase 1/6: Discovery
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
+? Do you have a reference image to start from?
+  > No reference       — Start from scratch — I'll make choices as we go
+    Yes, I have one    — I'll provide a file path or drag an image in
+    Multiple refs      — I have several images for different aspects
+
 ? What are we building?
   > Full page          — Complete single page (hero, sections, footer)
     Multi-page site    — Multiple connected pages with shared nav/footer
@@ -102,6 +108,18 @@ Phase 1/6: Discovery
 ```
 
 Each phase continues with selectable options until the full pixel-spec prompt is assembled and written to a file.
+
+## Image References
+
+You can provide reference images at three key points:
+
+| When | What It Does |
+|------|-------------|
+| **Phase 1 (Discovery)** | Analyzes a screenshot or mockup upfront — extracts colors, fonts, layout patterns, effects as a starting point for the entire design |
+| **Phase 2 (Design System)** | Extracts a color palette from a brand asset or screenshot instead of picking from presets |
+| **Phase 4 (Per-section)** | Analyzes a section-specific reference and drafts the pixel-spec directly from it |
+
+The skill reads the image, identifies concrete values (hex colors, approximate spacing, font characteristics, border radius, effects), and presents them as selectable options for you to confirm, adjust, or ignore.
 
 ## Output
 

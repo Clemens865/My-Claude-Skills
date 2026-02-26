@@ -20,17 +20,18 @@ The output prompt can be fed directly into any AI code generator — v0, Lovable
 ### The 6-Phase Design Loop
 
 **Phase 1: Discovery**
-Establishes what you're building. Scope (page, section, component), audience, mood direction, content status. All via selectable choices.
+Establishes what you're building. Scope (page, section, component), audience, mood direction, content status. All via selectable choices. Optionally accepts a reference image upfront — analyzes it to extract colors, typography, layout, and effects as a starting point.
 
 **Phase 2: Design System Foundation**
-Locks down every design token: tech stack, font + weights, color system (exact hex/rgba values), spacing scale, border radius, surface treatment (glass, solid, elevated), animation defaults. Outputs a Global Context Block.
+Locks down every design token: tech stack, font + weights, color system (exact hex/rgba values), spacing scale, border radius, surface treatment (glass, solid, elevated), animation defaults. Colors can be picked from curated presets, entered manually, or extracted from a reference image (brand asset, screenshot). Outputs a Global Context Block.
 
 **Phase 3: Component Architecture**
 Maps the page structure top-to-bottom as a numbered component tree. Navbar, Hero, Features, Pricing, Footer — whatever the page needs. User approves, adds, removes, or reorders.
 
 **Phase 4: Section-by-Section Specification — The Loop**
 The core of the skill. For each section in the component tree:
-- Asks layout decisions via selectable options (centered vs. split, solid vs. gradient bg, full viewport vs. contained)
+- Optionally accepts a reference image for that specific section — extracts layout, spacing, typography, and effects directly
+- If no image: asks layout decisions via selectable options (centered vs. split, solid vs. gradient bg, full viewport vs. contained)
 - Drafts a complete pixel-spec for that section (every padding, font size, color, animation, hover state — all numbers)
 - Presents the spec for approval
 - User approves or requests adjustments
@@ -43,6 +44,25 @@ Combines all approved sections into one complete prompt file following a proven 
 
 **Phase 6: Review & Refine**
 Final review with options to approve, revise specific sections (loops back to Phase 4), adjust the design system (loops back to Phase 2), or restructure (loops back to Phase 3).
+
+### Image Reference Support
+
+Users can provide reference images (screenshots, mockups, brand assets, inspiration) at three key points in the process:
+
+| When | What Gets Extracted |
+|------|-------------------|
+| Phase 1 (Discovery) | Full analysis: colors, typography, layout patterns, effects, component structure |
+| Phase 2 (Design System) | Color palette: background, text, accent, surface, border as hex/rgba values |
+| Phase 4 (Per-section) | Section-specific: layout structure, spacing, typography sizes, effects |
+
+**How it works:**
+1. The skill offers a "reference image" option at each relevant phase
+2. User provides a file path (or drags an image into Claude Code)
+3. The skill reads and analyzes the image using Claude's vision capabilities
+4. Extracted values are presented as selectable options — the user can confirm, adjust, or ignore each value
+5. Confirmed values are used in the pixel-spec output
+
+This means you can hand the skill a screenshot of a site you like and it will reverse-engineer the design tokens from it — then let you tweak them before committing.
 
 ### Interaction Model
 
@@ -114,6 +134,7 @@ This prompt, when given to an AI code generator, produces deterministic output �
 | Output varies wildly between runs | Same spec = same output every time |
 | Requires design expertise to write a good prompt | Skill guides you through each decision |
 | One-shot: write prompt, generate, start over | Iterative: approve section-by-section, refine targeted areas |
+| Start from scratch every time | Provide reference images to extract and reuse existing design values |
 
 ## Technical Details
 
@@ -121,4 +142,5 @@ This prompt, when given to an AI code generator, produces deterministic output �
 - **Dependencies:** `prompt-engineering-patterns.md` knowledge base file
 - **Scope:** Global (all projects) or per-project installation
 - **Invocation:** `/ui-expert [description of what to design]`
-- **Tools used:** `AskUserQuestion` for interactive selections, file write for output
+- **Tools used:** `AskUserQuestion` for interactive selections, `Read` for image analysis, file write for output
+- **Image support:** Accepts screenshots, mockups, and brand assets at Phases 1, 2, and 4

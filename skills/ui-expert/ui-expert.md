@@ -23,6 +23,31 @@ Read and internalize the methodology in @prompt-engineering-patterns.md — this
 6. **Visual reading order.** Always top-to-bottom, left-to-right — matching how code renders.
 7. **Layered descriptions.** Complex elements = stacking layers (background → overlay → content), not flat descriptions.
 
+## Image References
+
+**You can analyze reference images at any point in the process.** When the user provides an image path (screenshot, mockup, brand asset, inspiration), use the `Read` tool to view it and extract concrete values.
+
+**What to extract from images:**
+- **Colors:** Identify dominant colors and convert to hex values. List background, text, accent, and border colors.
+- **Typography:** Identify font families (or closest match), approximate sizes, weights, and spacing.
+- **Layout:** Describe the grid structure, spacing patterns, alignment, and container widths.
+- **Effects:** Note border radius, shadows, blur effects, gradients, overlays.
+- **Components:** Identify the section structure and component patterns.
+
+**How to use extracted values:**
+After reading an image, present the extracted values via AskUserQuestion so the user can confirm or adjust:
+```
+Question 1: "I extracted these colors from your reference. Use them?"
+Header: "Colors"
+Options:
+  - "Use as-is" / "bg #0f0f0f, accent #6366f1, text #e2e2e2, surface #1a1a1a"
+  - "Adjust" / "Use as starting point but I want to tweak values"
+  - "Ignore" / "Don't use these — I'll pick colors separately"
+```
+
+**When to prompt for images:**
+At the start of Phase 1, Phase 2 (design system), and Phase 4 (per-section), always offer the option to provide a reference image. Include it as one of the selectable options.
+
 ## CRITICAL: Interaction Method
 
 **You MUST use the `AskUserQuestion` tool for EVERY decision point.** Never just print questions as text and wait. Always present choices as selectable options the user can pick with arrow keys.
@@ -63,6 +88,18 @@ Phase [N]/6: [Phase Name]
 **Goal:** Understand what we're building.
 
 Use AskUserQuestion to ask these in batches of 2-4 questions at a time:
+
+**Batch 0 (Reference Image):**
+```
+Question 1: "Do you have a reference image to start from? (screenshot, mockup, inspiration)"
+Header: "Reference"
+Options:
+  - "No reference" / "Start from scratch — I'll make choices as we go"
+  - "Yes, I have one" / "I'll provide a file path or drag an image in"
+  - "Multiple references" / "I have several images for different aspects (colors, layout, style)"
+```
+
+If the user provides an image: use the `Read` tool to analyze it. Extract colors (as hex), typography (font guess + sizes), layout patterns, spacing, effects. Present findings via AskUserQuestion and ask which extracted values to keep.
 
 **Batch 1:**
 ```
@@ -171,7 +208,19 @@ Options:
   - "700 (Bold)" / "Main headings, hero titles"
 ```
 
-**Color System** — present presets based on the mood chosen in Phase 1:
+**Color System** — first check if the user wants to extract from a reference:
+```
+Question 1: "How do you want to define colors?"
+Header: "Color source"
+Options:
+  - "Pick a preset" / "Choose from curated palettes matching your mood"
+  - "Extract from image" / "I'll provide a screenshot or brand asset to pull colors from"
+  - "Enter manually" / "I have specific hex values ready"
+```
+
+If "Extract from image": ask for the image path, use `Read` to analyze it, extract the dominant color palette as hex values (background, text, accent, surface, border). Present extracted colors via AskUserQuestion for confirmation.
+
+If "Pick a preset" — present presets based on the mood chosen in Phase 1:
 
 For dark mood, offer:
 ```
@@ -269,7 +318,18 @@ Section [M]/[N]: [Section Name]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-**For each section, use AskUserQuestion for key layout decisions:**
+**For each section, first ask if they have a visual reference:**
+```
+Question 1: "Do you have a reference image for this section?"
+Header: "Reference"
+Options:
+  - "No, guide me" / "Walk me through layout choices step by step"
+  - "Yes" / "I'll provide a screenshot or mockup for this section"
+```
+
+If they provide an image: use `Read` to analyze it. Extract the layout structure, spacing, typography sizes, colors, and effects specific to that section. Draft the pixel-spec based on the image and present it for confirmation — the user can then approve or adjust specific values.
+
+If no image — **use AskUserQuestion for key layout decisions:**
 
 Example for a Hero section:
 ```

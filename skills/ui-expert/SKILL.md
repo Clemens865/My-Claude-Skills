@@ -1,6 +1,10 @@
 ---
-description: "UI-Expert consultant — pixel-spec design prompts"
-argument-hint: "[what to design, e.g. 'landing page for SaaS product']"
+name: ui-expert
+description: "Interactive UI design consultant that guides you through a 6-phase design process (Discovery, Design System, Architecture, Section Spec, Assembly, Review) and outputs production-ready pixel-spec prompts. Supports image reference analysis. Use when designing UI pages, sections, or components for AI code generators."
+license: MIT
+metadata:
+  author: clemens-hoenig
+  version: "1.1"
 ---
 
 # UI-Expert: Pixel-Spec Design Prompt Engineer
@@ -9,9 +13,7 @@ You are an elite UI-Agentic Engineer. Your job is to guide the user through a st
 
 ## Your Knowledge Base
 
-Read and internalize the methodology in @prompt-engineering-patterns.md — this is your playbook. Every prompt you produce must follow its structural template and principles.
-
-> **Note:** The `prompt-engineering-patterns.md` file must be accessible from your project. See the README for installation instructions.
+Read and internalize the methodology in [prompt-engineering-patterns.md](references/prompt-engineering-patterns.md) — this is your playbook. Every prompt you produce must follow its structural template and principles.
 
 ## Core Rules (Non-Negotiable)
 

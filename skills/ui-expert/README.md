@@ -1,10 +1,12 @@
-# /ui-expert — Pixel-Spec Design Prompt Engineer
+# ui-expert — Pixel-Spec Design Prompt Engineer
 
-A Claude Code skill that acts as an elite UI design consultant, guiding you through a structured design process and outputting production-ready pixel-spec prompts.
+An [Agent Skill](https://agentskills.io) that acts as an interactive UI design consultant, guiding you through a structured design process and outputting production-ready pixel-spec prompts.
+
+Also available as a Claude Code `/command` — see [`claude-code-commands/ui-expert.md`](../../claude-code-commands/ui-expert.md).
 
 ## What It Does
 
-Instead of writing vague design descriptions and hoping for the best, `/ui-expert` walks you through a 6-phase interactive design process — making every decision explicit, every value a number, and every output deterministic.
+Instead of writing vague design descriptions and hoping for the best, `ui-expert` walks you through a 6-phase interactive design process — making every decision explicit, every value a number, and every output deterministic.
 
 The result: a complete pixel-spec prompt file you can feed to any AI code generator (v0, Lovable, Bolt, Claude Artifacts) and get exactly the UI you designed.
 
@@ -12,10 +14,10 @@ The result: a complete pixel-spec prompt file you can feed to any AI code genera
 
 | Phase | Name | What Happens |
 |-------|------|-------------|
-| 1 | **Discovery** | Scope, audience, mood, content status |
-| 2 | **Design System** | Tech stack, fonts, colors, spacing, effects |
+| 1 | **Discovery** | Scope, audience, mood, content status, optional reference image |
+| 2 | **Design System** | Tech stack, fonts, colors (from presets, manual, or image extraction), spacing, effects |
 | 3 | **Component Architecture** | Page structure mapped top-to-bottom |
-| 4 | **Section Spec (The Loop)** | Each section specified pixel-by-pixel with approval gates |
+| 4 | **Section Spec (The Loop)** | Each section specified pixel-by-pixel with approval gates and optional image references |
 | 5 | **Assembly** | All sections combined into one prompt file |
 | 6 | **Review & Refine** | Targeted revisions, loop back to any phase |
 
@@ -24,47 +26,38 @@ Every decision is presented as **selectable options** (arrow keys) — not free-
 ## What Makes It Different
 
 - **Zero vague adjectives.** The words "modern," "clean," "minimal," "subtle" are banned. Everything is a number: `px`, `rem`, `hex`, `rgba`, `ms`.
-- **Interactive selections.** Every decision point uses Claude Code's `AskUserQuestion` UI — pick with arrow keys, not typing.
+- **Interactive selections.** Every decision point presents 2-4 concrete options to pick from, not open-ended questions.
 - **Image reference support.** Provide screenshots, mockups, or brand assets at any phase — the skill extracts colors, typography, layout, and effects as concrete values.
 - **Section-by-section loop.** Each section gets its own approval gate. Approve and move on, or revise before continuing.
 - **Anti-pattern detector.** If you say something vague, it won't accept it — it'll present concrete alternatives to choose from.
 - **Based on proven methodology.** Built on analysis of production UI engineering prompts that consistently produce high-fidelity output.
 
-## Installation
+## Image References
 
-### Option A: Global (available in all projects)
+You can provide reference images at three key points:
 
-```bash
-# Create the global commands directory
-mkdir -p ~/.claude/commands
+| When | What It Does |
+|------|-------------|
+| **Phase 1 (Discovery)** | Analyzes a screenshot or mockup upfront — extracts colors, fonts, layout patterns, effects as a starting point for the entire design |
+| **Phase 2 (Design System)** | Extracts a color palette from a brand asset or screenshot instead of picking from presets |
+| **Phase 4 (Per-section)** | Analyzes a section-specific reference and drafts the pixel-spec directly from it |
 
-# Copy the skill and its knowledge base
-cp skills/ui-expert/ui-expert.md ~/.claude/commands/ui-expert.md
-cp skills/ui-expert/prompt-engineering-patterns.md ~/.claude/commands/prompt-engineering-patterns.md
+The skill reads the image, identifies concrete values (hex colors, approximate spacing, font characteristics, border radius, effects), and presents them as selectable options for you to confirm, adjust, or ignore.
+
+## Directory Structure (agentskills.io)
+
+```
+ui-expert/
+  SKILL.md                                  # Skill definition
+  references/
+    prompt-engineering-patterns.md           # Knowledge base — methodology and patterns
+  README.md                                 # This file
+  ui-expert-summary.md                      # Presentation-ready summary
 ```
 
-Then update the `@` reference in `~/.claude/commands/ui-expert.md` to point to the patterns file:
-```
-@~/.claude/commands/prompt-engineering-patterns.md
-```
+## Usage in Claude Code
 
-### Option B: Per-project
-
-```bash
-# From your project root
-mkdir -p .claude/commands
-
-# Copy both files
-cp skills/ui-expert/ui-expert.md .claude/commands/ui-expert.md
-cp skills/ui-expert/prompt-engineering-patterns.md .claude/commands/prompt-engineering-patterns.md
-```
-
-Update the `@` reference in `.claude/commands/ui-expert.md`:
-```
-@.claude/commands/prompt-engineering-patterns.md
-```
-
-## Usage
+If installed as a Claude Code command (`/ui-expert`):
 
 ```bash
 # Full page design session
@@ -107,23 +100,9 @@ Phase 1/6: Discovery
     Neutral            — Gray tones (#f5f5f5/#1a1a1a), clean lines
 ```
 
-Each phase continues with selectable options until the full pixel-spec prompt is assembled and written to a file.
-
-## Image References
-
-You can provide reference images at three key points:
-
-| When | What It Does |
-|------|-------------|
-| **Phase 1 (Discovery)** | Analyzes a screenshot or mockup upfront — extracts colors, fonts, layout patterns, effects as a starting point for the entire design |
-| **Phase 2 (Design System)** | Extracts a color palette from a brand asset or screenshot instead of picking from presets |
-| **Phase 4 (Per-section)** | Analyzes a section-specific reference and drafts the pixel-spec directly from it |
-
-The skill reads the image, identifies concrete values (hex colors, approximate spacing, font characteristics, border radius, effects), and presents them as selectable options for you to confirm, adjust, or ignore.
-
 ## Output
 
-The skill produces a complete pixel-spec prompt file like:
+The skill produces a complete pixel-spec prompt file:
 
 ```markdown
 Build a landing page for [project].
@@ -138,21 +117,11 @@ Global Design System:
 
 Navbar:
 - Fixed top, max-width 1200px centered, h-16, px-6, flex row items-center justify-between
-- Logo: Inter 600, 18px, white, tracking-tight
-- Links: flex row gap-32px, Inter 400, 14px, rgba(255,255,255,0.6), hover:white, transition 200ms
 ...
 ```
 
-## Files
-
-| File | Purpose |
-|------|---------|
-| `ui-expert.md` | The skill command (copy to `.claude/commands/`) |
-| `prompt-engineering-patterns.md` | Knowledge base — the methodology and patterns the skill references |
-| `README.md` | This file |
-
 ## Background
 
-Based on the analysis in `prompt-engineering-patterns.md`, which documents the patterns found in production UI engineering prompts that consistently generate pixel-perfect frontend code. The key insight: these prompts are **executable design specs disguised as natural language** — the AI's job is assembly, not design.
+Based on the analysis in [`references/prompt-engineering-patterns.md`](references/prompt-engineering-patterns.md), which documents the patterns found in production UI engineering prompts that consistently generate pixel-perfect frontend code. The key insight: these prompts are **executable design specs disguised as natural language** — the AI's job is assembly, not design.
 
-The `/ui-expert` skill turns this methodology into an interactive, guided process accessible to anyone — not just people who already think in CSS.
+The `ui-expert` skill turns this methodology into an interactive, guided process accessible to anyone — not just people who already think in CSS.

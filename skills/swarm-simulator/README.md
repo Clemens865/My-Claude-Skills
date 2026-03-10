@@ -90,28 +90,6 @@ The simulation follows a multi-agent behavioral modeling approach inspired by [M
 3. **Emergent Detection** — The system watches for sentiment shifts >15%, cross-population consensus, unexpected solidarity, and other emergent patterns
 4. **Report Generation** — A structured analysis synthesizes all rounds into actionable findings
 
-## Real Simulation Example
-
-**Scenario:** *"We're a German datacenter provider competing with Hetzner, IONOS, and hyperscalers. What's the optimal pricing strategy for EU AI Act and DSGVO compliance?"*
-
-**Result:** 60 agents across 4 populations (Enterprise CIOs, Startup CTOs, Public Sector Buyers, Competitor Strategists) over 5 rounds.
-
-| Round | Positive | Neutral | Negative | Adopt | Key Event |
-|-------|----------|---------|----------|-------|-----------|
-| 1 | 23 | 16 | 21 | 4 | Market opens cautiously, 40% evaluating |
-| 2 | 24 | 22 | 14 | 7 | Hyperscalers deploy 40-50% discounts |
-| 3 | 29 | 19 | 12 | 16 | OVHcloud proposes European Sovereign Alliance |
-| 4 | 41 | 13 | 6 | 34 | Cross-population consensus, IONOS acquisition LOI |
-| 5 | 51 | 7 | 2 | 49 | 82% adoption, alliance = market structure |
-
-**Key emergent behaviors:**
-- Competitors spontaneously formed a European Sovereign Alliance instead of fighting
-- Sovereignty reframed from "compliance cost" to "revenue enabler" to "market organizing principle"
-- AWS went from dismissing sovereignty to seeking observer status in the alliance it tried to counter
-- Customer mandates cascaded down supply chains, creating a self-reinforcing adoption wave
-
-**Pricing sweet spot:** 15-25% above post-hike Hetzner, 30-40% below hyperscalers — the "compliance-inclusive" middle tier.
-
 ## Example Scenarios
 
 | Domain | Example Prompt |

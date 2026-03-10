@@ -7,6 +7,7 @@ A collection of [Agent Skills](https://agentskills.io) and Claude Code commands 
 | Skill | Description |
 |-------|-------------|
 | [ui-expert](skills/ui-expert/) | Interactive pixel-spec design prompt engineer — 6-phase design process with image reference support |
+| [swarm-simulator](skills/swarm-simulator/) | Multi-agent swarm simulation for scenario prediction — researches via web, spawns 40-100 agents, runs 5-round simulation, generates interactive HTML dashboard report |
 
 ## Two Formats
 
@@ -23,6 +24,10 @@ skills/ui-expert/
     prompt-engineering-patterns.md       # Knowledge base
   README.md                             # Documentation
   ui-expert-summary.md                  # Presentation summary
+
+skills/swarm-simulator/
+  SKILL.md                              # Skill definition (agentskills.io format)
+  README.md                             # Documentation
 ```
 
 ### 2. Claude Code Commands (`claude-code-commands/`)
@@ -32,6 +37,7 @@ Ready-to-use `/commands` for [Claude Code](https://docs.anthropic.com/en/docs/cl
 ```
 claude-code-commands/
   ui-expert.md                          # Drop into .claude/commands/
+  simulate.md                           # Drop into .claude/commands/
 ```
 
 ## Installation

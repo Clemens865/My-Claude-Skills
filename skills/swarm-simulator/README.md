@@ -1,18 +1,23 @@
 # Swarm Simulator
 
-A Claude Code skill that runs multi-agent swarm simulations for scenario prediction. Describe any scenario — pricing strategy, product launch, policy change, market entry — and get a research-grounded simulation with an interactive HTML dashboard report.
+A Claude Code skill that runs **real multi-agent swarm simulations** for scenario prediction. Each population is simulated by an **independent subagent** that cannot see other populations' decisions — producing genuinely emergent behavior, not one mind imagining all agents.
 
 ## What It Does
 
-1. **Researches** the scenario via web search (market data, precedents, stakeholder positions)
+1. **Researches** the scenario via parallel web search agents (market data, precedents, stakeholders)
 2. **Designs** 3-5 agent populations (40-100 agents) with distinct personalities and goals
-3. **Simulates** 5 rounds of agent decisions with evolving world state
-4. **Detects** emergent behaviors — unexpected patterns no single agent would predict
-5. **Generates** a beautiful dark-themed HTML dashboard with charts, findings, and recommendations
+3. **Simulates** 5 rounds using **independent subagents per population** — all running in parallel
+4. **Detects** emergent behaviors — unexpected patterns that arise from truly independent reasoning
+5. **Persists** full simulation state to JSON for reproducibility
+6. **Generates** a beautiful dark-themed HTML dashboard with charts, findings, and recommendations
+
+## Real Independent Agents
+
+Unlike simple prompt-based simulations, this skill spawns **separate subagent processes** for each population in each round. Population A literally cannot see what Population B decided this round — they only see the aggregated world state from previous rounds. This architectural independence is what makes emergent behavior genuine rather than imagined.
 
 ## No API Keys Required
 
-The skill runs entirely within Claude Code — Claude itself acts as the simulation engine. No external API calls, no infrastructure, no costs beyond the conversation.
+The skill runs entirely within Claude Code using the Agent tool for parallel subagents. No external API calls, no infrastructure, no costs beyond the conversation.
 
 ## Example Usage
 
